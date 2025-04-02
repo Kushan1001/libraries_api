@@ -28,7 +28,7 @@ def get_all_asi_summaries():
             same_nid_dict = [obj for obj in asi_list if obj['nid'] == id]
             same_nid_dict = same_nid_dict[0]
             same_nid_dict['summary'] += f"\n\n {same_nid_dict['summary']}"
-            same_nid_dict['title'] += f", {same_nid_dict['title']}"
+            # same_nid_dict['title'] += f", {same_nid_dict['title']}"
             same_nid_dict['pdf_path'] += f", {same_nid_dict['pdf_path']}"
     return asi_list
 
