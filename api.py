@@ -137,5 +137,3 @@ def csl_summaries():
     else:
         return jsonify({'message': 'Opeation Failed'}), 404
     
-app.run()
-
