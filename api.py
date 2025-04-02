@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 # Functions
 def get_all_asi_summaries():
-    df = pd.read_csv(r'C:\Users\KushanSharma\OneDrive - Indian Culture Portal\Desktop\OCR Work\OCR Final Work\match_nids\nid_mapped_asi.csv')
+    df = pd.read_csv('nid_mapped_asi.csv')
     nid_seen = []
     asi_list = []
 
