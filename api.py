@@ -21,6 +21,7 @@ def get_all_asi_summaries():
             # asi_dict['folder'] = row['folder'].iloc[0]
             asi_dict['summary'] = row['summary'].iloc[0]
             asi_dict['pdf_path'] = row['pdf_path'].iloc[0]
+            asi_dict['body'] = row['body'].iloc[0]
 
             asi_list.append(asi_dict)    
             nid_seen.append(id)
