@@ -17,7 +17,7 @@ def get_all_asi_summaries():
             # print(row['title'].iloc[0]) # return series and why are fetching the first element
             
             asi_dict['nid'] = id
-            # asi_dict['title'] = row['title'].iloc[0]
+            asi_dict['title'] = row['title'].iloc[0]
             # asi_dict['folder'] = row['folder'].iloc[0]
             asi_dict['summary'] = row['summary'].iloc[0]
             asi_dict['pdf_path'] = row['pdf_path'].iloc[0]
@@ -29,7 +29,7 @@ def get_all_asi_summaries():
             same_nid_dict = [obj for obj in asi_list if obj['nid'] == id]
             same_nid_dict = same_nid_dict[0]
             same_nid_dict['summary'] += f"\n\n {same_nid_dict['summary']}"
-            # same_nid_dict['title'] += f", {same_nid_dict['title']}"
+            same_nid_dict['title'] += f", {same_nid_dict['title']}"
             same_nid_dict['pdf_path'] += f", {same_nid_dict['pdf_path']}"
     return asi_list
 
