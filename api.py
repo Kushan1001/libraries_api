@@ -6,7 +6,7 @@ app = Flask(__name__)
 # Functions
 
 def get_all_asi_summaries():
-    df = pd.read_excel('test-asi.xlsx')
+    df = pd.read_excel('asi-summaries.csv')
 
     asi_list = []
     nid_seen = []
@@ -44,7 +44,7 @@ def get_all_asi_summaries():
 
 
 def get_all_dli_summaries():
-    df = pd.read_csv(r'C:\Users\KushanSharma\OneDrive - Indian Culture Portal\Desktop\OCR Work\OCR Final Work\Final Summaries\dli-summaries.csv')
+    df = pd.read_csv('dli-summaries.csv')
     
     nid_seen = []
     dli_list = []
@@ -73,7 +73,7 @@ def get_all_dli_summaries():
 
 
 def get_all_csl_summaries():
-    df = pd.read_excel(r'C:\Users\KushanSharma\OneDrive - Indian Culture Portal\Desktop\OCR Work\OCR Final Work\Final Summaries\csl-summaries.xlsx')
+    df = pd.read_excel('csl-summaries.xlsx')
 
     csl_list = []
     nid_seen = []
