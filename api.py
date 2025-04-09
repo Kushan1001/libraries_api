@@ -4,38 +4,47 @@ import pandas as pd
 app = Flask(__name__)
 
 # Functions
+
 def get_all_asi_summaries():
-    df = pd.read_csv('nid_mapped_asi.csv')
-    nid_seen = []
+    df = pd.read_excel('test-asi.xlsx')
+
     asi_list = []
+    nid_seen = []
 
     for id in df['nid']:
+        row = row = df[df['nid'] == id]
+
         if id not in nid_seen:
-            asi_dict = {}
-            row = df[df['nid'] == id]
+            if len(row) > 1:
+                asi_obj = {}
+                for _, entry in row.iterrows():
+                    if entry['nid'] not in nid_seen:
+                        asi_obj['nid'] = str(entry['nid'])
+                        asi_obj['title'] = entry['title']
+                        asi_obj['pdf_path'] = entry['pdf_path']
+                        asi_obj['summary'] = entry['summary']
 
-            # print(row['title'].iloc[0]) # return series and why are fetching the first element
-            
-            asi_dict['nid'] = id
-            asi_dict['title'] = row['title'].iloc[0]
-            # asi_dict['folder'] = row['folder'].iloc[0]
-            asi_dict['summary'] = row['summary'].iloc[0]
-            asi_dict['pdf_path'] = row['pdf_path'].iloc[0]
-            asi_dict['body'] = row['body'].iloc[0]
+                        asi_list.append(asi_obj)
+                        nid_seen.append(entry['nid'])
+                    else:
+                        same_nid_dict = [obj for obj in asi_list if obj['nid'] == str(entry['nid'])][0]
+                        same_nid_dict['title'] += f",  {entry['title']}"
+                        same_nid_dict['pdf_path'] += f",  {entry['pdf_path']}"
+                        same_nid_dict['summary'] += f"\n\n {entry['summary']}"         
+            else:
+                asi_obj = {}
+                asi_obj['nid'] = str(row['nid'].iloc[0])
+                asi_obj['title'] = row['title'].iloc[0]
+                asi_obj['pdf_path'] = row['pdf_path'].iloc[0]
+                asi_obj['summary'] = row['summary'].iloc[0]
+                asi_list.append(asi_obj)
+                nid_seen.append(row['nid'].iloc[0])
 
-            asi_list.append(asi_dict)    
-            nid_seen.append(id)
-        else:
-            same_nid_dict = [obj for obj in asi_list if obj['nid'] == id]
-            same_nid_dict = same_nid_dict[0]
-            same_nid_dict['summary'] += f"\n\n {same_nid_dict['summary']}"
-            same_nid_dict['title'] += f", {same_nid_dict['title']}"
-            same_nid_dict['pdf_path'] += f", {same_nid_dict['pdf_path']}"
     return asi_list
 
 
 def get_all_dli_summaries():
-    df = pd.read_csv(r'C:\Users\KushanSharma\OneDrive - Indian Culture Portal\Desktop\OCR Work\OCR Final Work\match_nids\nid_mapped_dli.csv')
+    df = pd.read_csv(r'C:\Users\KushanSharma\OneDrive - Indian Culture Portal\Desktop\OCR Work\OCR Final Work\Final Summaries\dli-summaries.csv')
     
     nid_seen = []
     dli_list = []
@@ -64,7 +73,7 @@ def get_all_dli_summaries():
 
 
 def get_all_csl_summaries():
-    df = pd.read_excel(r'C:\Users\KushanSharma\OneDrive - Indian Culture Portal\Desktop\OCR Work\OCR Final Work\match_nids\csl-summaries.xlsx')
+    df = pd.read_excel(r'C:\Users\KushanSharma\OneDrive - Indian Culture Portal\Desktop\OCR Work\OCR Final Work\Final Summaries\csl-summaries.xlsx')
 
     csl_list = []
     nid_seen = []
@@ -104,6 +113,7 @@ def get_all_csl_summaries():
 #-----------------------------------------------------------------------------------------------------------------
 
 # APIs
+# Done
 @app.post('/rest-v1/asi-summaries')
 def asi_summaries():
     summaries = get_all_asi_summaries()
@@ -116,6 +126,7 @@ def asi_summaries():
         return jsonify({'message': 'Opeation Failed'}), 404
 
 
+# Done
 @app.post('/rest-v1/dli-summaries')
 def dli_summaries():
     summaries = get_all_dli_summaries()
@@ -128,6 +139,7 @@ def dli_summaries():
         return jsonify({'message': 'Opeation Failed'}), 404
 
 
+
 @app.post('/rest-v1/csl-summaries')
 def csl_summaries():
     summaries = get_all_csl_summaries()
@@ -138,3 +150,5 @@ def csl_summaries():
     else:
         return jsonify({'message': 'Opeation Failed'}), 404
     
+app.run(debug=True)
+
