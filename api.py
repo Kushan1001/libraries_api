@@ -6,7 +6,7 @@ app = Flask(__name__)
 # Functions
 
 def get_all_asi_summaries():
-    df = pd.read_excel('asi-summaries.csv')
+    df = pd.read_csv('asi-summaries.csv')
 
     asi_list = []
     nid_seen = []
