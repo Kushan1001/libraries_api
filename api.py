@@ -109,6 +109,82 @@ def get_all_csl_summaries():
 
     return csl_list
 
+def get_all_ignca_summaries():
+    df = pd.read_excel('ignca-summaries.xlsx')
+
+    ignca_list = []
+    nid_seen = []
+
+    for id in df['nid']:
+        row = row = df[df['nid'] == id]
+
+        if id not in nid_seen:
+            if len(row) > 1:
+                ignca_obj = {}
+                for _, entry in row.iterrows():
+                    if entry['nid'] not in nid_seen:
+                        ignca_obj['nid'] = str(entry['nid'])
+                        ignca_obj['title'] = entry['title']
+                        ignca_obj['pdf_path'] = entry['pdf_path']
+                        ignca_obj['summary'] = entry['summary']
+
+                        ignca_list.append(ignca_obj)
+                        nid_seen.append(entry['nid'])
+                    # else:
+                    #     same_nid_dict = [obj for obj in ignca_list if obj['nid'] == str(entry['nid'])][0]
+                    #     same_nid_dict['title'] += f",  {entry['title']}"
+                    #     same_nid_dict['pdf_path'] += f",  {entry['pdf_path']}"
+                    #     same_nid_dict['summary'] += f"\n\n {entry['summary']}"         
+            else:
+                ignca_obj = {}
+                ignca_obj['nid'] = str(row['nid'].iloc[0])
+                ignca_obj['title'] = row['title'].iloc[0]
+                ignca_obj['pdf_path'] = row['pdf_path'].iloc[0]
+                ignca_obj['summary'] = row['summary'].iloc[0]
+                ignca_list.append(ignca_obj)
+                nid_seen.append(row['nid'].iloc[0])
+
+    return ignca_list
+
+
+def get_all_nli_summaries():
+    df = pd.read_excel('completed_nli-summaries.xlsx')
+
+    nli_list = []
+    nid_seen = []
+
+    for id in df['nid']:
+        row = row = df[df['nid'] == id]
+
+        if id not in nid_seen:
+            if len(row) > 1:
+                nli_obj = {}
+                for _, entry in row.iterrows():
+                    if entry['nid'] not in nid_seen:
+                        nli_obj['nid'] = str(entry['nid'])
+                        nli_obj['title'] = entry['title']
+                        nli_obj['pdf_path'] = entry['pdf_path']
+                        nli_obj['summary'] = entry['summary']
+
+                        nli_list.append(nli_obj)
+                        nid_seen.append(entry['nid'])
+                    # else:
+                    #     same_nid_dict = [obj for obj in ignca_list if obj['nid'] == str(entry['nid'])][0]
+                    #     same_nid_dict['title'] += f",  {entry['title']}"
+                    #     same_nid_dict['pdf_path'] += f",  {entry['pdf_path']}"
+                    #     same_nid_dict['summary'] += f"\n\n {entry['summary']}"         
+            else:
+                nli_obj = {}
+                nli_obj['nid'] = str(row['nid'].iloc[0])
+                nli_obj['title'] = row['title'].iloc[0]
+                nli_obj['pdf_path'] = row['pdf_path'].iloc[0]
+                nli_obj['summary'] = row['summary'].iloc[0]
+                nli_list.append(nli_obj)
+                nid_seen.append(row['nid'].iloc[0])
+
+    return nli_list
+
+
 #-----------------------------------------------------------------------------------------------------------------
 #-----------------------------------------------------------------------------------------------------------------
 
@@ -143,6 +219,27 @@ def dli_summaries():
 @app.post('/rest-v1/csl-summaries')
 def csl_summaries():
     summaries = get_all_csl_summaries()
+    if summaries:
+        return jsonify(
+            {'results': summaries}
+        )
+    else:
+        return jsonify({'message': 'Opeation Failed'}), 404
+
+
+@app.post('/rest-v1/ignca-summaries')
+def ignca_summaries():
+    summaries = get_all_ignca_summaries()
+    if summaries:
+        return jsonify(
+            {'results': summaries}
+        )
+    else:
+        return jsonify({'message': 'Opeation Failed'}), 404
+    
+@app.post('/rest-v1/nli-summaries')
+def nli_summaries():
+    summaries = get_all_nli_summaries()
     if summaries:
         return jsonify(
             {'results': summaries}
