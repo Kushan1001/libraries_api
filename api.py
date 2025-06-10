@@ -184,6 +184,8 @@ def get_all_nli_summaries():
 
     return nli_list
 
+
+excel_df = pd.read_excel('all-20k-summaries.xlsx')
 output_list = []
 
 for idx, row in excel_df.iterrows():
