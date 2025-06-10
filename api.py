@@ -192,7 +192,7 @@ for idx, row in excel_df.iterrows():
     summary_obj = {}
     summary_obj['nid'] = row['nid']
     summary_obj['title'] = row['title']
-    summary_obj['summary'] = row['summaries']
+    summary_obj['summary'] = row['summary']
 
     output_list.append(summary_obj)
 
@@ -258,8 +258,6 @@ def nli_summaries():
         )
     else:
         return jsonify({'message': 'Opeation Failed'}), 404
-
-excel_df = pd.read_excel('all-20k-summaries.xlsx')
 
 
 @app.get('/rest-v1/all-summaries')
